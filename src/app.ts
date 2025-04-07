@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from './routes/authRoutes'; 
 import userRoutes from './routes/userRoutes';
+import adminRoutes from './routes/adminRoutes'
 import path from 'path';
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes); 
 app.use('/api/users', userRoutes);
+app.use('/api/admin',adminRoutes)
 
 app.get("/api/ping", (req, res) => {
   res.json({ message: "Pong!" });
