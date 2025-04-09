@@ -12,7 +12,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     }
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    (req as any).user = decoded; // attach decoded payload to req
+    (req as any).user = decoded; 
     next();
   } catch (err) {
      res.status(401).json({ msg: 'Token is not valid' });
