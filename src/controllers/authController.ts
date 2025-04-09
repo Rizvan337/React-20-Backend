@@ -8,7 +8,7 @@ import { HttpStatus } from '../utils/httpStatus';
 const JWT_SECRET = process.env.JWT_SECRET as string;
 if (!JWT_SECRET) throw new Error('JWT_SECRET must be defined in .env');
 
-// REGISTER
+// Register
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
@@ -49,7 +49,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// LOGIN
+// Login
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;

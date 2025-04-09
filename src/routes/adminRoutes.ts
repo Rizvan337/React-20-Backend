@@ -1,14 +1,12 @@
-// src/routes/adminRoutes.ts
 import User from '../models/User';
 import { verifyToken } from '../middlewares/authMiddleware';
 import express, { Request, Response } from 'express';
 const router = express.Router();
 import { asyncHandler } from '../utils/asynHandler';
 
-// Get all users
 router.get('/users', verifyToken, asyncHandler(async(req, res) => {
   try {
-    const users = await User.find({}, '-password'); // exclude password
+    const users = await User.find({}, '-password'); 
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch users' });
@@ -42,7 +40,6 @@ router.put('/users/:id', verifyToken, asyncHandler(async (req: Request, res: Res
 );
 
 
-// DELETE user by ID
 router.delete('/users/:id', verifyToken,asyncHandler(async (req: Request, res: Response) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
