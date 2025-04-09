@@ -15,6 +15,8 @@ router.get('/users', verifyToken, asyncHandler(async(req, res) => {
   } 
 })
 );
+
+
 router.put('/users/:id', verifyToken, asyncHandler(async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email } = req.body;
@@ -26,8 +28,8 @@ router.put('/users/:id', verifyToken, asyncHandler(async (req: Request, res: Res
       return;
     }
 
-    user.name = name || user.name;
-    user.email = email || user.email;
+    if (name !== undefined) user.name = name;
+    if (email !== undefined) user.email = email;
 
     const updatedUser = await user.save();
 
