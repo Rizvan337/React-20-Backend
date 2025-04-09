@@ -53,15 +53,17 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-
+    console.log("Login attempt:", email);
     const user: IUser | null = await User.findOne({ email });
     if (!user) {
+      console.log('❌ User not found in DB for email:', email);
       res.status(HttpStatus.NOT_FOUND).json({ msg: 'User not found' });
       return;
     }
-
+    console.log('✅ User found:', user.email);
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('❌ Password mismatch');
       res.status(HttpStatus.UNAUTHORIZED).json({ msg: 'Invalid credentials' });
       return;
     }
