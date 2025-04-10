@@ -3,6 +3,7 @@ import { verifyToken } from '../middlewares/authMiddleware';
 import express, { Request, Response } from 'express';
 const router = express.Router();
 import { asyncHandler } from '../utils/asynHandler';
+import bcrypt from 'bcryptjs'; 
 
 router.get('/users', verifyToken, asyncHandler(async(req, res) => {
   try {
@@ -56,5 +57,33 @@ router.delete('/users/:id', verifyToken,asyncHandler(async (req: Request, res: R
 })
 );
 
+
+router.post('/create-user', verifyToken, asyncHandler(async (req: Request, res: Response) => {
+  const { name, email, password, role } = req.body;
+
+  if (!name || !email || !password || !role) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(409).json({ message: 'User already exists' });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = new User({
+    name,
+    email,
+    password: hashedPassword,
+    role,
+  });
+
+  const savedUser = await newUser.save();
+
+  const { password: _, ...userWithoutPassword } = savedUser.toObject();
+
+  res.status(201).json(userWithoutPassword);
+}));
 
 export default router;
